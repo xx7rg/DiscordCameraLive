@@ -809,6 +809,21 @@ kbd {
   color: var(--faint);
 }
 
+.brand-tag {
+  margin-top: 10px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--muted);
+}
+
+.brand-tag-caption {
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+
 /* ------------------------------------------------------------
    Acessibilidade: movimento reduzido
    ------------------------------------------------------------ */
