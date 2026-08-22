@@ -1,0 +1,8 @@
+# Configuracao de update para desenvolvimento (npm run dev).
+# O electron-updater le este arquivo quando forceDevUpdateConfig = true.
+# Em producao quem vale e o app-update.yml gerado no build (owner/repo do
+# package.json), este arquivo so serve pra testar o fluxo de update localmente.
+owner: xx7rG
+repo: DiscordCameraLive
+provider: github
+releaseType: release

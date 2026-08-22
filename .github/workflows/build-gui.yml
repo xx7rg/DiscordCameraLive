@@ -1,0 +1,90 @@
+name: build-gui
+
+# Manual de proposito: roda quando a gente dispara para uma tag de release, constroi os
+# tres artefatos da GUI (exe Windows, AppImage Linux, dmg/zip macOS) e publica na release
+# com o metadata do auto-update (latest*.yml). O electron-builder publica direto na
+# release do GitHub — o app consulta a mesma release para se atualizar sozinho.
+# Mac e Linux nao compilam no Windows, entao eles nascem aqui.
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Release que recebe os artefatos (ex.: v1.1.2)'
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+concurrency:
+  group: build-gui-${{ inputs.tag }}
+  cancel-in-progress: false
+
+env:
+  GUI_DIR: xx7rg
+
+jobs:
+  windows:
+    runs-on: windows-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.tag }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: ${{ env.GUI_DIR }}/package-lock.json
+      - run: npm ci
+        working-directory: ${{ env.GUI_DIR }}
+      # --publish always: gera o DiscordCameraLive.exe + latest.yml e faz upload na release
+      # (o GH_TOKEN do workflow vira o GH_TOKEN que o electron-builder usa).
+      - run: npm run publish:win
+        working-directory: ${{ env.GUI_DIR }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  linux:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.tag }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: ${{ env.GUI_DIR }}/package-lock.json
+      - run: npm ci
+        working-directory: ${{ env.GUI_DIR }}
+      - run: npm run publish:linux
+        working-directory: ${{ env.GUI_DIR }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  macos:
+    runs-on: macos-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.tag }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: ${{ env.GUI_DIR }}/package-lock.json
+      - run: npm ci
+        working-directory: ${{ env.GUI_DIR }}
+      # Com CSC_LINK/CSC_KEY_PASSWORD o electron-builder assina o app; sem eles, builda
+      # sem assinatura (auto-update do Mac so funciona com app assinado).
+      - run: npm run publish:mac
+        working-directory: ${{ env.GUI_DIR }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CSC_LINK: ${{ secrets.CSC_LINK }}
+          CSC_KEY_PASSWORD: ${{ secrets.CSC_KEY_PASSWORD }}
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_APP_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}

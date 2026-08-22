@@ -1,0 +1,12 @@
+node_modules/
+dist/
+dist-electron/
+dist-app/
+*.log
+
+# api (Go)
+api/.env
+api/api
+
+# config local do agente
+.commandcode/

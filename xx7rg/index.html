@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'none'"
+    />
+    <title>DiscordCameraLive</title>
+    <script src="./theme-init.js"></script>
+  </head>
+  <body>
+    <div id="app">
+      <div class="page-ambient" aria-hidden="true"></div>
+
+      <div class="drag-region"></div>
+
+      <div class="container">
+        <header class="header">
+          <div class="header-top">
+            <div class="wordmark-group">
+              <span class="wordmark">
+                <img class="logo" src="./assets/logo.svg" alt="" aria-hidden="true" draggable="false" />
+                DiscordCameraLive
+              </span>
+              <span class="meta">Go Live &middot; Brasil</span>
+            </div>
+          </div>
+
+          <p class="tagline">Devolve o Go Live e a c&acirc;mera no Discord, no Brasil.</p>
+        </header>
+
+        <!-- Acoes fixas nos cantos da janela (fora do fluxo do container) -->
+        <div class="warning-anchor corner corner--bl">
+          <button
+            class="icon-btn warn-btn"
+            id="warnBtn"
+            type="button"
+            aria-label="Ver aviso"
+            aria-expanded="false"
+            aria-controls="warningAlert"
+            data-tip="Aviso"
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"/>
+              <path d="M12 9v4"/>
+              <path d="M12 17h.01"/>
+            </svg>
+          </button>
+
+          <div id="warningAlert" class="warning-alert" role="status">
+            <svg class="warn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"/>
+              <path d="M12 9v4"/>
+              <path d="M12 17h.01"/>
+            </svg>
+            <p>
+              <strong>Aviso:</strong> Se a transmiss&atilde;o ficar preta ou n&atilde;o carregar,
+              aperte <kbd id="reloadKeys">Ctrl + R</kbd> no Discord.
+            </p>
+          </div>
+        </div>
+
+        <a
+          href="https://discord.gg/ZeNs47vE4R"
+          target="_blank"
+          rel="noopener"
+          class="icon-btn discord-btn corner corner--br"
+          aria-label="Entrar no servidor de suporte"
+          data-tip="Suporte"
+        >
+          <svg viewBox="0 0 127.14 96.36" aria-hidden="true">
+            <path d="M107.7,8.07A105.15,105.15,0,0,0,81.47,0a72.06,72.06,0,0,0-3.36,6.83A97.68,97.68,0,0,0,49,6.83,72.37,72.37,0,0,0,45.64,0,105.89,105.89,0,0,0,19.39,8.09C2.79,32.65-1.71,56.6.54,80.21h0A105.73,105.73,0,0,0,32.71,96.36,77.7,77.7,0,0,0,39.6,85.25a68.42,68.42,0,0,1-10.85-5.18c.91-.66,1.8-1.34,2.66-2a75.57,75.57,0,0,0,64.32,0c.87.71,1.76,1.39,2.66,2a67.55,67.55,0,0,1-10.87,5.19,77,77,0,0,0,6.89,11.1,105.25,105.25,0,0,0,32.19-16.14c2.64-27.38-4.51-51.11-18.9-80.15ZM42.45,65.69C36.18,65.69,31,60,31,53s5-12.74,11.43-12.74S54,46,53.89,53,48.84,65.69,42.45,65.69Zm42.24,0C78.41,65.69,73.31,60,73.31,53s5-12.74,11.43-12.74S96.33,46,96.22,53,91.08,65.69,84.69,65.69Z"/>
+          </svg>
+        </a>
+
+        <button
+          class="icon-btn theme-btn corner corner--tr"
+          id="themeBtn"
+          type="button"
+          aria-label="Alternar tema claro/escuro"
+          data-tip="Tema"
+        >
+          <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>
+          </svg>
+          <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="4"/>
+            <path d="M12 2v2"/>
+            <path d="M12 20v2"/>
+            <path d="m4.93 4.93 1.41 1.41"/>
+            <path d="m17.66 17.66 1.41 1.41"/>
+            <path d="M2 12h2"/>
+            <path d="M20 12h2"/>
+            <path d="m6.34 17.66-1.41 1.41"/>
+            <path d="m19.07 4.93-1.41 1.41"/>
+          </svg>
+        </button>
+
+        <div class="status-card" id="statusCard" hidden>
+          <span class="status-indicator" id="statusIndicator"></span>
+          <span id="statusText">Verificando...</span>
+          <span class="status-tag" id="statusTag">—</span>
+        </div>
+
+        <button id="toggleBtn" class="toggle-btn" disabled>
+          <svg class="btn-icon icon-play" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M8 5.14v13.72a1 1 0 0 0 1.5.86l11-6.86a1 1 0 0 0 0-1.72l-11-6.86A1 1 0 0 0 8 5.14Z"/>
+          </svg>
+          <svg class="btn-icon icon-stop" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <rect x="6" y="6" width="12" height="12" rx="2"/>
+          </svg>
+          <span class="btn-text" id="btnText">Carregando</span>
+          <div class="spinner" id="btnSpinner" aria-hidden="true"></div>
+        </button>
+
+        <label class="switch-row">
+          <input type="checkbox" id="startupToggle" />
+          <span class="switch-track" aria-hidden="true">
+            <span class="switch-thumb"></span>
+          </span>
+          <span id="startupLabel">Iniciar com o Windows</span>
+        </label>
+
+        <details class="advanced">
+          <summary>
+            <span>Avan&ccedil;ado: Proxy Customizada</span>
+            <span class="plus" aria-hidden="true">
+              <span class="plus-bar bar-v"></span>
+              <span class="plus-bar bar-h"></span>
+            </span>
+          </summary>
+          <div class="proxy-input-group">
+            <input type="text" id="proxyInput" placeholder="socks5://host:porta" spellcheck="false" />
+            <small>Deixe em branco para usar gratuitas.</small>
+          </div>
+        </details>
+
+        <footer class="footer">
+          <p class="disclaimer">
+            O Discord reiniciar&aacute; automaticamente.
+            <span id="closeHint">Fechar a janela esconde o app na bandeja, junto do rel&oacute;gio &mdash; para reverter tudo, saia pelo &iacute;cone de l&aacute;.</span>
+          </p>
+        </footer>
+      </div>
+    </div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

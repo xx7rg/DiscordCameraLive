@@ -1,0 +1,86 @@
+name: ci
+
+# Roda em todo push/PR (diferente do build-gui.yml, que e manual e so para releases).
+# Valida compilacao da GUI, a API em Go, e os testes shell dos instaladores/standalone.
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  gui:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: xx7rg
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: xx7rg/package-lock.json
+      - run: npm ci
+      # Falha alto se electron/bypass.ts (copia embutida) divergir do standalone de
+      # verdade — sem isso o npm run compile abaixo regravaria em silencio e o CI
+      # nunca pegaria a divergencia.
+      - run: node scripts/sync-bypass.mjs --check
+      - run: npm run compile
+
+  api:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: api
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: api/go.mod
+          cache-dependency-path: api/go.sum
+      - run: go vet ./...
+      - run: go test ./...
+
+  shell-posix:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - run: ./tests/test-posix.sh
+
+  shell-exit-refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      RUNTIME: docker
+    steps:
+      - uses: actions/checkout@v4
+      - run: ./tests/test-exit-refresh.sh
+
+  shell-heartbeat:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      RUNTIME: docker
+    steps:
+      - uses: actions/checkout@v4
+      - run: ./tests/test-heartbeat.sh
+
+  shell-proxy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      RUNTIME: docker
+    steps:
+      - uses: actions/checkout@v4
+      - run: ./tests/test-proxy-artix.sh
+
+  # tests/test-artix-gui.sh fica de fora de propósito: precisa do AppImage já
+  # compilado (npm run build:linux) e testa a janela de verdade em Wayland+Vulkan —
+  # pesado demais para todo push. Roda manualmente antes de cada release.
