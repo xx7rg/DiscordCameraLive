@@ -193,17 +193,18 @@ cat >> "$ELEVATE_HARNESS" <<'H_EOF'
 elevate sh -c "echo elevado > /tmp/fakehome/ok"
 [ -f /tmp/fakehome/ok ] && grep -q "PKEXEC:sh" /tmp/elevate-used
 H_EOF
-if "$RUNTIME" run --rm -u 1000:1000 \
+elevate_out="$("$RUNTIME" run --rm -u 1000:1000 \
     -v "$ELEVATE_HARNESS:/t.sh:ro" \
     -v "$ELEVATE_HOME/bin:/tmp/fakebin:ro" \
     -v "$ELEVATE_HOME:/tmp/fakehome" \
     fedora:latest sh -c '
     export PATH=/tmp/fakebin:$PATH
     sh /t.sh
-' >/dev/null 2>&1; then
+' 2>&1)"
+if [ $? -eq 0 ]; then
     ok "elevate cai para pkexec sem sudo NOPASSWD (fedora)"
 else
-    bad "elevate nao usou pkexec sem sudo NOPASSWD"
+    bad "elevate nao usou pkexec sem sudo NOPASSWD: $elevate_out"
 fi
 rm -rf "$ELEVATE_HOME" "$ELEVATE_HARNESS"
 
