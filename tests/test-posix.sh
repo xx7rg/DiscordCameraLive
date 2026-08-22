@@ -179,6 +179,10 @@ fi
 # elevate: sem sudo NOPASSWD, o pkexec (polkit) assume — o caso do Fedora KDE/GNOME
 # onde o sudo falha sem TTY. Simula com um pkexec fake que registra a chamada.
 ELEVATE_HOME="$(mktemp -d)"
+# mktemp -d cria com 700 (so o dono do host acessa); montado em /tmp/fakehome e escrito
+# pelo uid 1000 de dentro do container, que so por coincidencia e o dono em algumas
+# maquinas. Sem isto, o container nem consegue entrar no diretorio (falta x para outros).
+chmod 777 "$ELEVATE_HOME"
 mkdir -p "$ELEVATE_HOME/bin"
 cat > "$ELEVATE_HOME/bin/pkexec" <<'PKEXEC_EOF'
 #!/bin/sh
@@ -193,6 +197,10 @@ cat >> "$ELEVATE_HARNESS" <<'H_EOF'
 elevate sh -c "echo elevado > /tmp/fakehome/ok"
 [ -f /tmp/fakehome/ok ] && grep -q "PKEXEC:sh" /tmp/elevate-used
 H_EOF
+# mktemp cria com 600, dono do usuario do host; o container roda como uid 1000, que so
+# por coincidencia bate com o dono em algumas maquinas. Sem isto, "sh /t.sh" falha com
+# "Permission denied" em qualquer ambiente onde uid 1000 nao e quem criou o arquivo.
+chmod 644 "$ELEVATE_HARNESS"
 elevate_out="$("$RUNTIME" run --rm -u 1000:1000 \
     -v "$ELEVATE_HARNESS:/t.sh:ro" \
     -v "$ELEVATE_HOME/bin:/tmp/fakebin:ro" \
