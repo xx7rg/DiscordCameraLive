@@ -21,6 +21,19 @@ export default defineConfig({
         onstart(options) {
           options.reload()
         },
+        vite: {
+          build: {
+            // package.json tem "type": "module", entao o vite-plugin-electron builda tudo em
+            // ESM por padrao (build.lib.formats, nao rollupOptions/rolldownOptions -- e quem
+            // decide o formato de verdade em modo lib). Com sandbox:true o preload roda num
+            // loader que so aceita CommonJS -- em ESM ele falha em silencio, o contextBridge
+            // nunca chama, e window.api fica undefined pro renderer inteiro (TypeError na
+            // primeira leitura, "Cannot read properties of undefined (reading 'platform')").
+            lib: {
+              formats: ['cjs'],
+            },
+          },
+        },
       },
     ]),
     renderer(),
