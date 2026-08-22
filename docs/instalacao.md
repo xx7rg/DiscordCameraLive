@@ -8,6 +8,7 @@ Este guia cobre **todos** os jeitos de instalar o DiscordCameraLive, do mais sim
 
 | Você... | Use |
 |---|---|
+| nunca instalou nada assim, ou quer o passo a passo mais devagar possível | [Guia para leigos](comecando.md) |
 | usa Windows ou macOS e só quer clicar num botão | [Interface Gráfica (Windows e macOS)](#interface-gráfica-windows-e-macos) |
 | usa Linux e quer clique único, sem terminal | [Interface Gráfica para Linux (AppImage)](#interface-gráfica-para-linux-appimage) |
 | já usa Equicord ou Vencord e não se importa com um comando no terminal | [Instalação automática](#instalação-automática-um-comando) |

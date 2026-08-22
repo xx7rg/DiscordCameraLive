@@ -20,6 +20,8 @@ Por dentro, só o WebSocket de gateway do Discord passa por uma proxy fora do Br
 3. Abra o arquivo. O programa **não é assinado** — o sistema avisa na primeira vez (Windows: **Mais informações → Executar assim mesmo**; macOS: veja o passo a passo completo).
 4. Clique em **"Ativar Bypass"**. O Discord reinicia sozinho com o Go Live desbloqueado.
 
+É a sua primeira vez instalando algo assim, ou vai ajudar alguém que não manja de computador? Siga o **[guia passo a passo para leigos](docs/comecando.md)** — mesmos passos de cima, mas bem devagar, com o que fazer em cada aviso do Windows/Mac.
+
 Prefere um comando no terminal, já usa Equicord/Vencord, ou quer instalar tudo à mão? O **[guia de instalação completo](docs/instalacao.md)** cobre todos os caminhos — GUI, instalador automático, modo standalone, manual passo a passo, e o Vesktop.
 
 ## Avisos importantes
@@ -35,6 +37,7 @@ Detalhes completos (o que o programa toca no seu sistema, riscos, licença) em [
 
 | Guia | Conteúdo |
 |---|---|
+| [docs/comecando.md](docs/comecando.md) | Passo a passo bem devagar, para quem nunca instalou nada assim — sem termos técnicos |
 | [docs/instalacao.md](docs/instalacao.md) | Todos os jeitos de instalar: GUI (Windows/macOS/Linux), um comando só, instalador automático, modo standalone, manual passo a passo, Vesktop, notas por distro Linux |
 | [docs/como-funciona.md](docs/como-funciona.md) | Por que o plugin existe, por que o Go Live volta a funcionar, as duas travas que ele desarma, como as proxies são escolhidas |
 | [docs/solucao-de-problemas.md](docs/solucao-de-problemas.md) | Problemas comuns e como resolver, e o que o arquivo de registro conta |
