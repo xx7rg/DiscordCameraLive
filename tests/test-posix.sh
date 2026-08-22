@@ -200,8 +200,8 @@ elevate_out="$("$RUNTIME" run --rm -u 1000:1000 \
     fedora:latest sh -c '
     export PATH=/tmp/fakebin:$PATH
     sh /t.sh
-' 2>&1)"
-if [ $? -eq 0 ]; then
+' 2>&1)" && elevate_rc=0 || elevate_rc=$?
+if [ "$elevate_rc" -eq 0 ]; then
     ok "elevate cai para pkexec sem sudo NOPASSWD (fedora)"
 else
     bad "elevate nao usou pkexec sem sudo NOPASSWD: $elevate_out"
