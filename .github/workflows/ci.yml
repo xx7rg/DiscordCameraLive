@@ -52,7 +52,7 @@ jobs:
     timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
-      - run: ./tests/test-posix.sh
+      - run: sh ./tests/test-posix.sh
 
   shell-exit-refresh:
     runs-on: ubuntu-latest
@@ -61,7 +61,7 @@ jobs:
       RUNTIME: docker
     steps:
       - uses: actions/checkout@v4
-      - run: ./tests/test-exit-refresh.sh
+      - run: sh ./tests/test-exit-refresh.sh
 
   shell-heartbeat:
     runs-on: ubuntu-latest
@@ -70,7 +70,7 @@ jobs:
       RUNTIME: docker
     steps:
       - uses: actions/checkout@v4
-      - run: ./tests/test-heartbeat.sh
+      - run: sh ./tests/test-heartbeat.sh
 
   shell-proxy:
     runs-on: ubuntu-latest
@@ -79,7 +79,7 @@ jobs:
       RUNTIME: docker
     steps:
       - uses: actions/checkout@v4
-      - run: ./tests/test-proxy-artix.sh
+      - run: sh ./tests/test-proxy-artix.sh
 
   # tests/test-artix-gui.sh fica de fora de propósito: precisa do AppImage já
   # compilado (npm run build:linux) e testa a janela de verdade em Wayland+Vulkan —
