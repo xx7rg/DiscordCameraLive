@@ -92,3 +92,15 @@ It was written after Brazil's data protection authority (ANPD) [ordered Discord 
 Original project by **[bezumiya](https://github.com/bezumiya)** — [bezumiya/GoLiveBypass](https://github.com/bezumiya/GoLiveBypass). Thanks to **[mazxxy](https://github.com/mazxxy)** for the idea this project is built on: a local SOCKS5 with an embedded PAC routing only the gateway through the proxy ([PR #3](https://github.com/bezumiya/GoLiveBypass/pull/3)). Thanks to **[Vithor](https://github.com/Vith0r)** for the first installer, which the current one grew out of. Thanks to **[cleo-dev](https://github.com/cleo-dev)** for building the original GUI app from scratch. Thanks to **[Eduardo Vasconcelos](https://github.com/EduardoVasconceloss)** for the [StreamFix](https://github.com/EduardoVasconceloss/StreamFix) fork: adversarial reviews that found real bugs, and for porting the local SOCKS router into the plugin. Thanks to **[gabrigode](https://github.com/gabrigode)** for Flatpak support in the Linux installer. Thanks to **[StellaThimoty](https://github.com/StellaThimoty)** and **[pdl-clay](https://github.com/pdl-clay)** for the Vesktop install path. Thanks to **[Victor Mello](https://github.com/victorsvart)** for the [GUI-MacOS](https://github.com/victorsvart/GoLiveBypass-GUI-MacOS) fork, porting the GUI to macOS.
 
 **This fork, DiscordCameraLive, is maintained by [x7rG](https://github.com/xx7rG).** Renamed the project, hardened the Electron GUI (context isolation + CSP, previously ran with `nodeIntegration` on and no isolation), made the `app.asar` swap transactional with automatic rollback on failure, added push/PR CI, and split this documentation into smaller guides.
+
+---
+
+<div align="center">
+
+**© 2026 x7rG ENTERPRISE™** — Todos os direitos reservados.
+
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?style=flat&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/rgds)
+&nbsp;
+[![Instagram](https://img.shields.io/badge/Instagram-E4405F?style=flat&logo=instagram&logoColor=white)](https://www.instagram.com/_7ragnar/)
+
+</div>
