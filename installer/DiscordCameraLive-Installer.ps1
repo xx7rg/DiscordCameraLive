@@ -11,6 +11,8 @@
       .\DiscordCameraLive-Installer.ps1 -Mod Equicord -Yes
       .\DiscordCameraLive-Installer.ps1 -Mode Uninstall
 
+    Obrigado ao Vithor (https://github.com/Vith0r), que escreveu o primeiro instalador do
+    GoLiveBypass e abriu o caminho para este aqui.
 #>
 
 [CmdletBinding()]

@@ -241,7 +241,7 @@ function createWindow() {
 
   // Sem isto, um link com target="_blank" abre numa janela do Electron sem barra de endereco:
   // a pessoa nao ve para onde esta indo, e nao tem como voltar. Vale para o botao do Discord,
-  // que ja existia.
+  // que ja existia, e para os creditos.
   mainWindow.webContents.setWindowOpenHandler(({ url }) => {
     if (/^https:\/\//.test(url)) void shell.openExternal(url);
     return { action: "deny" };

@@ -2,6 +2,7 @@
   "name": "discordcameralive-gui",
   "private": true,
   "version": "1.1.5",
+  "license": "GPL-3.0-or-later",
   "type": "module",
   "main": "dist-electron/main.js",
   "scripts": {
@@ -20,6 +21,7 @@
   "build": {
     "appId": "com.discordcameralive.gui",
     "productName": "DiscordCameraLive",
+    "copyright": "Baseado no GoLiveBypass, de bezumiya e colaboradores. Modificações do DiscordCameraLive: x7rG. GPL-3.0-or-later.",
     "publish": {
       "provider": "github",
       "owner": "xx7rG",

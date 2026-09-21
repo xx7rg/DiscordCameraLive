@@ -48,9 +48,13 @@ Detalhes completos (o que o programa toca no seu sistema, riscos, licença) em [
 
 GPL-3.0-or-later, mesma licença do Vencord/Equicord. Veja [LICENSE](LICENSE).
 
+O DiscordCameraLive é um fork do [GoLiveBypass](https://github.com/bezumiya/GoLiveBypass), de bezumiya e colaboradores, que também é GPL-3.0-or-later. Este fork mantém a mesma licença e os avisos de copyright e de licença do original; as modificações do fork são distribuídas sob a mesma GPL-3.0-or-later. O código herdado continua sendo dos autores originais e sob a licença deles.
+
 ## Créditos
 
-**[bezumiya](https://github.com/bezumiya)** criou o **GoLiveBypass**, o projeto original do qual este fork nasceu — [bezumiya/GoLiveBypass](https://github.com/bezumiya/GoLiveBypass), [@obezumiya](https://twitter.com/obezumiya).
+### Original (upstream): GoLiveBypass
+
+O **GoLiveBypass** foi criado por **[bezumiya](https://github.com/bezumiya)** e colaboradores — [bezumiya/GoLiveBypass](https://github.com/bezumiya/GoLiveBypass), [@obezumiya](https://twitter.com/obezumiya) — sob a GPL-3.0-or-later. Este fork nasceu dele, a partir da v1.1.5 (publicada em 22/08/2026).
 
 **Obrigado ao [mazxxy](https://github.com/mazxxy)** pela ideia que virou a espinha dorsal do projeto: foi o primeiro a notar que o `session.setProxy` vale para a sessão inteira e a propor, na [PR #3](https://github.com/bezumiya/GoLiveBypass/pull/3), o desenho que o bypass usa até hoje — um SOCKS5 local com um PAC embutido mandando só o gateway pela proxy.
 
@@ -68,7 +72,7 @@ GPL-3.0-or-later, mesma licença do Vencord/Equicord. Veja [LICENSE](LICENSE).
 
 ### Este fork: DiscordCameraLive
 
-Mantido por **[x7rG](https://github.com/xx7rG)**. A partir do GoLiveBypass original, este fork renomeou o projeto, colocou a GUI Electron para rodar com isolamento de contexto e uma Content-Security-Policy (antes rodava com `nodeIntegration` ligado e sem isolamento nenhum), tornou a troca do `app.asar` transacional — com rollback automático se alguma etapa falhar no meio —, adicionou CI de validação em todo push/PR, e reorganizou esta documentação em guias menores para ficar mais fácil de achar as coisas.
+Mantido e adaptado por **Rogério Gomes ([x7rG](https://github.com/xx7rG))**, com modificações desde 22/08/2026 (primeiro commit do fork). A partir do GoLiveBypass original (v1.1.5), este fork renomeou o projeto, colocou a GUI Electron para rodar com isolamento de contexto e uma Content-Security-Policy (antes rodava com `nodeIntegration` ligado e sem isolamento nenhum), tornou a troca do `app.asar` transacional — com rollback automático se alguma etapa falhar no meio —, adicionou CI de validação em todo push/PR, e reorganizou esta documentação em guias menores para ficar mais fácil de achar as coisas. As modificações do fork são GPL-3.0-or-later, como o original, e o código herdado mantém os avisos de copyright e de licença dos autores originais.
 
 # English
 
@@ -89,15 +93,17 @@ It was written after Brazil's data protection authority (ANPD) [ordered Discord 
 
 ## Credits
 
-Original project by **[bezumiya](https://github.com/bezumiya)** — [bezumiya/GoLiveBypass](https://github.com/bezumiya/GoLiveBypass). Thanks to **[mazxxy](https://github.com/mazxxy)** for the idea this project is built on: a local SOCKS5 with an embedded PAC routing only the gateway through the proxy ([PR #3](https://github.com/bezumiya/GoLiveBypass/pull/3)). Thanks to **[Vithor](https://github.com/Vith0r)** for the first installer, which the current one grew out of. Thanks to **[cleo-dev](https://github.com/cleo-dev)** for building the original GUI app from scratch. Thanks to **[Eduardo Vasconcelos](https://github.com/EduardoVasconceloss)** for the [StreamFix](https://github.com/EduardoVasconceloss/StreamFix) fork: adversarial reviews that found real bugs, and for porting the local SOCKS router into the plugin. Thanks to **[gabrigode](https://github.com/gabrigode)** for Flatpak support in the Linux installer. Thanks to **[StellaThimoty](https://github.com/StellaThimoty)** and **[pdl-clay](https://github.com/pdl-clay)** for the Vesktop install path. Thanks to **[Victor Mello](https://github.com/victorsvart)** for the [GUI-MacOS](https://github.com/victorsvart/GoLiveBypass-GUI-MacOS) fork, porting the GUI to macOS.
+Original project: **GoLiveBypass**, by **[bezumiya](https://github.com/bezumiya)** and contributors — [bezumiya/GoLiveBypass](https://github.com/bezumiya/GoLiveBypass) (GPL-3.0-or-later). Thanks to **[mazxxy](https://github.com/mazxxy)** for the idea this project is built on: a local SOCKS5 with an embedded PAC routing only the gateway through the proxy ([PR #3](https://github.com/bezumiya/GoLiveBypass/pull/3)). Thanks to **[Vithor](https://github.com/Vith0r)** for the first installer, which the current one grew out of. Thanks to **[cleo-dev](https://github.com/cleo-dev)** for building the original GUI app from scratch. Thanks to **[Eduardo Vasconcelos](https://github.com/EduardoVasconceloss)** for the [StreamFix](https://github.com/EduardoVasconceloss/StreamFix) fork: adversarial reviews that found real bugs, and for porting the local SOCKS router into the plugin. Thanks to **[gabrigode](https://github.com/gabrigode)** for Flatpak support in the Linux installer. Thanks to **[StellaThimoty](https://github.com/StellaThimoty)** and **[pdl-clay](https://github.com/pdl-clay)** for the Vesktop install path. Thanks to **[Victor Mello](https://github.com/victorsvart)** for the [GUI-MacOS](https://github.com/victorsvart/GoLiveBypass-GUI-MacOS) fork, porting the GUI to macOS.
 
-**This fork, DiscordCameraLive, is maintained by [x7rG](https://github.com/xx7rG).** Renamed the project, hardened the Electron GUI (context isolation + CSP, previously ran with `nodeIntegration` on and no isolation), made the `app.asar` swap transactional with automatic rollback on failure, added push/PR CI, and split this documentation into smaller guides.
+**This fork, DiscordCameraLive, is maintained and adapted by Rogério Gomes ([x7rG](https://github.com/xx7rG)).** Modified from GoLiveBypass v1.1.5 since 2026-08-22, under the same license (GPL-3.0-or-later) and keeping the original copyright and license notices. Renamed the project, hardened the Electron GUI (context isolation + CSP, previously ran with `nodeIntegration` on and no isolation), made the `app.asar` swap transactional with automatic rollback on failure, added push/PR CI, and split this documentation into smaller guides.
 
 ---
 
 <div align="center">
 
-**© 2026 x7rG ENTERPRISE™** — Todos os direitos reservados.
+**DiscordCameraLive**, fork mantido por **x7rG ENTERPRISE™** — modificações © 2026 x7rG.
+
+Baseado no [GoLiveBypass](https://github.com/bezumiya/GoLiveBypass), de bezumiya e colaboradores. Licenciado sob a [GPL-3.0-or-later](LICENSE).
 
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?style=flat&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/rgds)
 &nbsp;

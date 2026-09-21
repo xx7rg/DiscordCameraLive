@@ -14,6 +14,9 @@
 #   ./discordcameralive-installer.sh --mod vencord --yes
 #   ./discordcameralive-installer.sh --uninstall
 #
+# Obrigado ao Vithor (https://github.com/Vith0r), que escreveu o primeiro instalador do
+# GoLiveBypass e abriu o caminho para este aqui.
+#
 # So construcoes POSIX: roda em dash, bash, zsh, ksh e busybox ash.
 # (sem pipefail de proposito: o status de pipeline e o do ultimo comando, como manda o POSIX)
 set -eu

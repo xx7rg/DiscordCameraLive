@@ -12,7 +12,7 @@ import { Logger } from "@utils/Logger";
 import { useAwaiter } from "@utils/react";
 import definePlugin, { OptionType, PluginNative } from "@utils/types";
 import { findStoreLazy } from "@webpack";
-import { Constants, RestAPI, SearchableSelect, showToast, Toasts, UserStore } from "@webpack/common";
+import { Constants, MaskedLink, RestAPI, SearchableSelect, showToast, Toasts, UserStore } from "@webpack/common";
 
 const Native = VencordNative?.pluginHelpers?.DiscordCameraLive as PluginNative<typeof import("./native")> | undefined;
 
@@ -125,6 +125,15 @@ function StreamRegionPicker() {
             automaticLabel="Same region as your call"
             onChange={region => settings.store.streamRegion = region}
         />
+    );
+}
+
+function AboutPlugin() {
+    return (
+        <Paragraph>
+            Original: GoLiveBypass, made by bezumiya and contributors (GPL-3.0-or-later). Source and issues on <MaskedLink href="https://github.com/bezumiya/GoLiveBypass">GitHub</MaskedLink>, and bezumiya posts about it on <MaskedLink href="https://twitter.com/obezumiya">Twitter</MaskedLink>.
+            {" "}Fork: DiscordCameraLive, maintained and adapted by x7rG. Source on <MaskedLink href="https://github.com/xx7rG/DiscordCameraLive">GitHub</MaskedLink>.
+        </Paragraph>
     );
 }
 
@@ -377,9 +386,10 @@ async function buildReport() {
 export default definePlugin({
     name: "DiscordCameraLive",
     description: "Turns Go Live and camera back on for Brazilian accounts by neutralising Discord's video guard, and keeps your calls on the region you pick.",
-    authors: [],
+    authors: [{ name: "bezumiya", id: 1366453661970071633n }],
     tags: ["Voice", "Privacy"],
     settings,
+    settingsAboutComponent: AboutPlugin,
 
     patches: [
         {

@@ -809,8 +809,36 @@ kbd {
   color: var(--faint);
 }
 
+.credits {
+  margin-top: 7px;
+  font-size: 10px;
+  color: var(--faint);
+  opacity: 0.8;
+}
+
+/* Sublinhado discreto em vez de cor de link: o rodape e a parte mais apagada da janela, e um
+   azul aqui competiria com o botao de ativar, que e a unica coisa que a pessoa precisa achar. */
+.credits-link {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  text-decoration-color: color-mix(in srgb, currentColor 45%, transparent);
+  transition: opacity 0.15s ease, text-decoration-color 0.15s ease;
+}
+
+/* Sem quebra no meio do identificador da licenca. */
+.credits-license {
+  white-space: nowrap;
+}
+
+.credits-link:hover,
+.credits-link:focus-visible {
+  opacity: 1;
+  text-decoration-color: currentColor;
+}
+
 .brand-tag {
-  margin-top: 10px;
+  margin-top: 6px;
   font-size: 10px;
   font-weight: 600;
   letter-spacing: 0.02em;
