@@ -4,7 +4,7 @@ API HTTP, em Go, que recebe relatos de bug dos apps do DiscordCameraLive e abre
 issues no GitHub. Por enquanto só isto: um endpoint autenticado que transforma
 um relato (título, descrição, log de diagnóstico e metadados) em uma issue.
 
-- **Stack**: Go 1.25+ · [Echo v5](https://github.com/labstack/echo/v5)
+- **Stack**: Go 1.26.5+ · [Echo v5](https://github.com/labstack/echo)
 - **Dependência externa**: nenhuma além do Echo (o cliente do GitHub é stdlib)
 
 ## Como funciona
@@ -33,9 +33,24 @@ app (GUI/standalone, futuro)              API (este serviço)              GitHu
 
 ## Rodando
 
-```sh
+Os comandos desta seção devem ser executados dentro da pasta `api`.
+
+### Bash ou Zsh
+
+```bash
 cd api
-go run ./cmd/api        # exige API_TOKEN e GITHUB_TOKEN no ambiente
+export API_TOKEN="substitua_por_um_segredo_compartilhado"
+export GITHUB_TOKEN="substitua_pelo_pat_do_github"
+go run ./cmd/api
+```
+
+### PowerShell
+
+```powershell
+Set-Location api
+$env:API_TOKEN = 'substitua_por_um_segredo_compartilhado'
+$env:GITHUB_TOKEN = 'substitua_pelo_pat_do_github'
+go run ./cmd/api
 ```
 
 Variáveis (todas em `.env.example`):
@@ -51,32 +66,80 @@ Variáveis (todas em `.env.example`):
 | `MAX_LOG_BYTES` | não | `262144` | teto do campo `log` (256 KB) |
 | `LOG_LEVEL` | não | `info` | `debug`, `info`, `warn`, `error` |
 
+O arquivo `.env.example` é apenas um modelo. A API lê as variáveis do ambiente
+do processo e não carrega esse arquivo automaticamente.
+
 ### Testar com curl
 
-```sh
+Os exemplos abaixo usam Bash ou Zsh e devem ser executados em outro terminal,
+com a API já iniciada. Defina `API_TOKEN_VALUE` com o mesmo segredo configurado
+em `API_TOKEN` no servidor.
+
+```bash
+API_TOKEN_VALUE='substitua_pelo_mesmo_segredo_do_servidor'
+
 curl -s localhost:8080/healthz
 
 # sem token → 401
-curl -s -X POST localhost:8080/v1/reports -d '{"title":"x"}'
+curl -s -X POST localhost:8080/v1/reports \
+  -H 'Content-Type: application/json' \
+  -d '{"title":"x"}'
 
 # validação → 400
-curl -s -X POST localhost:8080/v1/reports -H 'Authorization: Bearer <API_TOKEN>' \
+curl -s -X POST localhost:8080/v1/reports \
+  -H "Authorization: Bearer ${API_TOKEN_VALUE}" \
+  -H 'Content-Type: application/json' \
   -d '{"title":""}'
+```
 
-# com token fake → 502 (chega no GitHub e falha na auth) — confirma o fluxo
+Para confirmar o fluxo até o GitHub sem criar uma issue, inicie outra instância
+com um token do GitHub inválido:
+
+```bash
+# primeiro terminal, dentro de api
 API_TOKEN=dev GITHUB_TOKEN=fake GITHUB_REPO=xx7rG/DiscordCameraLive go run ./cmd/api
-curl -s -X POST localhost:8080/v1/reports -H 'Authorization: Bearer dev' \
+
+# segundo terminal
+curl -s -X POST localhost:8080/v1/reports \
+  -H 'Authorization: Bearer dev' \
+  -H 'Content-Type: application/json' \
   -d '{"title":"Teste","log":"linha do log","meta":{"app":"cli","os":"linux"}}'
+```
+
+A resposta esperada é `502`: a API aceita o relato e o GitHub recusa o token
+inválido. Não use esse teste com um `GITHUB_TOKEN` real, pois ele criaria uma
+issue.
+
+No PowerShell, use `curl.exe` para evitar o alias de `Invoke-WebRequest`:
+
+```powershell
+# primeiro terminal, dentro de api
+$env:API_TOKEN = 'dev'
+$env:GITHUB_TOKEN = 'fake'
+$env:GITHUB_REPO = 'xx7rG/DiscordCameraLive'
+go run ./cmd/api
+
+# segundo terminal
+curl.exe -s -X POST http://localhost:8080/v1/reports -H "Authorization: Bearer dev" -H "Content-Type: application/json" --data '{"title":"Teste","log":"linha do log","meta":{"app":"cli","os":"windows"}}'
 ```
 
 ### Docker
 
-```sh
-docker build -t golive-api api
+Execute este bloco a partir da raiz do repositório, onde a pasta `api` está
+disponível:
+
+```bash
+docker build -t golive-api ./api
 docker run --rm -p 8080:8080 \
   -e API_TOKEN=... -e GITHUB_TOKEN=... \
   -e GITHUB_REPO=xx7rG/DiscordCameraLive \
   golive-api
+```
+
+No PowerShell, o mesmo `docker run` pode ser escrito em uma única linha:
+
+```powershell
+docker run --rm -p 8080:8080 -e API_TOKEN=... -e GITHUB_TOKEN=... -e GITHUB_REPO=xx7rG/DiscordCameraLive golive-api
 ```
 
 ## Endpoints
@@ -114,11 +177,11 @@ Resposta `201`:
 
 | Status | Quando | Body |
 |---|---|---|
-| `400` | payload inválido (JSON, title, tamanhos) | `{"error": "..."}` |
-| `401` | token ausente ou errado | `{"error": "..."}` |
-| `413` | corpo acima de 512 KB | `{"error": "..."}` |
-| `429` | rate limit por IP excedido (header `Retry-After`) | `{"error": "..."}` |
-| `404` / `405` | rota/método inexistente | `{"error": "..."}` |
+| `400` | payload inválido (JSON, title, tamanhos) | `{"message": "..."}` |
+| `401` | token ausente ou errado | `{"message": "..."}` |
+| `413` | corpo acima de 512 KB | `{"message": "..."}` |
+| `429` | rate limit por IP excedido (header `Retry-After`) | `{"message": "..."}` |
+| `404` / `405` | rota/método inexistente | `{"message": "..."}` |
 | `502` | o GitHub recusou (auth, label inexistente, etc.) | detalhe só no log do servidor |
 
 ## Operação
