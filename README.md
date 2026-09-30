@@ -1,10 +1,48 @@
-# DiscordCameraLive — Bypass do Go Live no Discord (Brasil)
+<div align="center">
+
+<img src="img/x7rg.png" alt="Logotipo x7rG Enterprise" width="190">
+
+# DiscordCameraLive
+
+**O aplicativo de um clique que recupera o Go Live e a câmera no Discord para computador no Brasil.**
+
+[![Versão](https://img.shields.io/github/v/release/xx7rG/DiscordCameraLive?style=flat-square&label=vers%C3%A3o)](https://github.com/xx7rG/DiscordCameraLive/releases/latest)
+[![Plataformas](https://img.shields.io/badge/plataformas-Windows%20%7C%20macOS%20%7C%20Linux-5865F2?style=flat-square)](#instalação-rápida)
+[![Electron](https://img.shields.io/badge/Electron-43-47848F?style=flat-square&logo=electron&logoColor=white)](xx7rg/package.json)
+[![Licença](https://img.shields.io/badge/licen%C3%A7a-GPL--3.0--or--later-2EA44F?style=flat-square)](LICENSE)
+[![Idioma](https://img.shields.io/badge/idioma-pt--BR-009C3B?style=flat-square)](#english)
+
+**Publicado por x7rG ENTERPRISE™**
+
+</div>
+
+---
+
+## Go Live e câmera no Discord para computador
 
 **Devolve o Go Live e a câmera para usuários brasileiros** no Discord para computador. Você não precisa entender de tecnologia para usar: o jeito mais fácil é o aplicativo de um clique logo abaixo.
 
 Por dentro, só o WebSocket de gateway do Discord passa por uma proxy fora do Brasil — todo o resto sai direto, na sua velocidade normal. Os detalhes técnicos estão em [Como funciona](docs/como-funciona.md).
 
 > **English summary at the end of this page.**
+
+## Como o tráfego é encaminhado
+
+```mermaid
+flowchart LR
+    A[Discord para computador] --> B[Regra PAC local]
+    B -->|gateway.discord.gg| C[Roteador SOCKS local]
+    C --> D{Saída disponível?}
+    D -->|Proxy principal| E[Saída fora do Brasil]
+    D -->|Falha| F[Proxy reserva]
+    D -->|Sem saída válida| G[Conexão direta segura]
+    E --> H[Gateway do Discord]
+    F --> H
+    G --> H
+    B -->|Demais conexões| I[Internet direta]
+```
+
+Somente o WebSocket do gateway passa pelo roteador local. Downloads, chamadas e o restante do tráfego continuam usando a conexão direta. O projeto testa as saídas, mantém reservas e volta para a conexão direta se nenhuma proxy responder.
 
 ## Instalação rápida
 
