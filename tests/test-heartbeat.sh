@@ -228,7 +228,9 @@ out="$("$RUNTIME" run --rm --pull=missing --user 0 \
     -v "$REPO:/repo:ro" \
     -v "$TMP:/helpers:ro" \
     "$IMG" sh -c '
-    pacman -Sy --noconfirm --needed nodejs >/dev/null 2>&1 || { echo "FALHA_DEPS"; exit 1; }
+    # Mantem o teste na mesma linha LTS usada pela GUI e evita que a imagem
+    # rolling do Artix troque silenciosamente para uma versao current do Node.
+    pacman -Sy --noconfirm --needed nodejs-lts-jod >/dev/null 2>&1 || { echo "FALHA_DEPS"; exit 1; }
     node /helpers/heartbeat-test.js
 ' 2>&1)"
 
@@ -237,6 +239,7 @@ echo "$out" | grep -E "\[OK\]|\[FAIL\]|RESULTADO" | sed 's/^\[DiscordCameraLive\
 if printf '%s' "$out" | grep -q "RESULTADO: TUDO OK"; then
     ok "batimento: todos os cenarios"
 else
+    printf '%s\n' "$out" >&2
     bad "batimento falhou: $(printf '%s' "$out" | grep -E '\[FAIL\]' | tail -4)"
 fi
 

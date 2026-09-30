@@ -222,7 +222,9 @@ out="$("$RUNTIME" run --rm --pull=missing --user 0 \
     -v "$REPO:/repo:ro" \
     -v "$TMP:/helpers:ro" \
     "$IMG" sh -c '
-    pacman -Sy --noconfirm --needed nodejs >/dev/null 2>&1 || { echo "FALHA_DEPS"; exit 1; }
+    # Mantem o teste na mesma linha LTS usada pela GUI e evita que a imagem
+    # rolling do Artix troque silenciosamente para uma versao current do Node.
+    pacman -Sy --noconfirm --needed nodejs-lts-jod >/dev/null 2>&1 || { echo "FALHA_DEPS"; exit 1; }
 
     # 1. o standalone grava o proxy no settings.json
     mkdir -p /tmp/home/.config/discord/app-9.9.9/resources
@@ -253,6 +255,7 @@ if printf '%s' "$out" | grep -q "SETTINGS_OK" \
    && printf '%s' "$out" | grep -q "RESULTADO: TUDO OK"; then
     ok "proxy manual (SOCKS5) funciona no Artix/OpenRC: settings + tunel + roteador"
 else
+    printf '%s\n' "$out" >&2
     bad "proxy manual falhou no Artix/OpenRC: $(printf '%s' "$out" | tail -4)"
 fi
 
